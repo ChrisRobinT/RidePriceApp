@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ride Price Calculator</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; }
+    label { display: block; margin-top: 1em; }
+    input, button { padding: 0.5em; margin-top: 0.5em; }
+    #result { margin-top: 2em; font-size: 1.2em; font-weight: bold; }
+  </style>
+</head>
+<body>
+<h1>Ride Price Calculator</h1>
+<form id="rideForm">
+  <label for="city">City:</label>
+  <input type="text" id="city" name="city" required />
+
+  <label for="vehicle">Vehicle (Car, Bike, Scooter):</label>
+  <input type="text" id="vehicle" name="vehicle" required />
+
+  <label for="rideTime">Ride Time (ISO 8601 format, e.g., 2025-04-05T08:00:00):</label>
+  <input type="text" id="rideTime" name="rideTime" placeholder="Leave empty to use current time" />
+
+  <button type="submit">Calculate Price</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+  document.getElementById("rideForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const city = document.getElementById("city").value;
+    const vehicle = document.getElementById("vehicle").value;
+    let rideTime = document.getElementById("rideTime").value;
+
+    // If rideTime is empty, use the current time in ISO format.
+    if (!rideTime) {
+      rideTime = new Date().toISOString();
+    }
+
+    // Build URL with query parameters
+    const url = `/ride-price?city=${encodeURIComponent(city)}&vehicle=${encodeURIComponent(vehicle)}&rideTime=${encodeURIComponent(rideTime)}`;
+
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText);
+      }
+      const data = await response.json();
+      document.getElementById("result").innerText =
+              `Final Price: €${data.finalPrice} | Risk Score: ${data.riskScore}`;
+    } catch (error) {
+      document.getElementById("result").innerText = "Error: " + error.message;
+    }
+  });
+</script>
+</body>
+</html>

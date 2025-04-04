@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.crt.fujitsu.ride_pricing_app.RidePricingAppApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.234 s -- in com.crt.fujitsu.ride_pricing_app.RidePricingAppApplicationTests
